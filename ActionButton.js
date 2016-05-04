@@ -1,5 +1,6 @@
 import React, { PropTypes, Component, StyleSheet, Text, View, Animated, Easing, TouchableOpacity, PixelRatio } from 'react-native';
 import ActionButtonItem from './ActionButtonItem';
+const { width, height } = React.Dimensions.get('window');
 
 const alignItemsMap = {
   "center" : "center",
@@ -97,12 +98,16 @@ export default class ActionButton extends Component {
 
   render() {
     return (
-      <View pointerEvents="box-none" style={styles.overlay}>
-        <Animated.View pointerEvents="none" style={[styles.overlay, {
+      <View pointerEvents="box-none" style={[styles.overlay]}>
+        <Animated.View pointerEvents="box-none" style={[styles.overlay, {
           backgroundColor: this.state.bgColor,
           opacity: this.state.anim
         }]}>
-          {this.props.backdrop}
+          <TouchableOpacity
+            onPress={()=>this.reset()}
+            style={{height: height}}>
+            {this.props.backdrop}
+          </TouchableOpacity>
         </Animated.View>
         <View pointerEvents="box-none" style={this.getContainerStyles()}>
           {this.props.children && this._renderActions()}
