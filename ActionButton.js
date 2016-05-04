@@ -1,6 +1,5 @@
 import React, { PropTypes, Component, StyleSheet, Text, View, Animated, Easing, TouchableOpacity, PixelRatio } from 'react-native';
 import ActionButtonItem from './ActionButtonItem';
-const { width, height } = React.Dimensions.get('window');
 
 const alignItemsMap = {
   "center" : "center",
@@ -97,22 +96,35 @@ export default class ActionButton extends Component {
   //////////////////////
 
   render() {
-    return (
-      <View pointerEvents="box-none" style={[styles.overlay]}>
-        <Animated.View pointerEvents="box-none" style={[styles.overlay, {
+    let touchable = (
+      <TouchableOpacity
+        onPress={()=>this.reset()}
+        style={[styles.overlay, { backgroundColor: 'transparent' }]}>
+      {this.props.backdrop}
+      </TouchableOpacity>
+    )
+
+    let untouchable = (
+      <Animated.View pointerEvents="none" style={[styles.overlay, {
           backgroundColor: this.state.bgColor,
           opacity: this.state.anim
         }]}>
-          <TouchableOpacity
-            onPress={()=>this.reset()}
-            style={{height: height}}>
-            {this.props.backdrop}
-          </TouchableOpacity>
+        {this.props.backdrop}
+      </Animated.View>
+    )
+    return (
+      <View pointerEvents="box-none" style={styles.overlay}>
+        <Animated.View pointerEvents="none" style={[styles.overlay, {
+          backgroundColor: this.state.bgColor,
+          opacity: this.state.anim
+        }]}>
+          {this.props.backdrop}
         </Animated.View>
         <View pointerEvents="box-none" style={this.getContainerStyles()}>
           {this.props.children && this._renderActions()}
           {this._renderButton()}
         </View>
+        { this.state.active ? touchable:null }
       </View>
     );
   }
@@ -179,10 +191,8 @@ export default class ActionButton extends Component {
     }
 
     return (
-        <TouchableOpacity
-          style={this.getActionsStyle()}
-          activeOpacity={1}
-          onPress={() => { this.reset() }}>
+        <View
+          style={this.getActionsStyle()}>
           {actionButtons.map((ActionButton, index) => {
             return (
               <ActionButtonItem
@@ -204,7 +214,7 @@ export default class ActionButton extends Component {
               />
             )
           })}
-        </TouchableOpacity>
+        </View>
     );
   }
 
