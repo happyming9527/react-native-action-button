@@ -227,6 +227,7 @@ export default class ActionButton extends Component {
        duration: 250,
     }).start();
 
+    this.props.openCallback && this.props.openCallback()
     this.setState({ active: true });
   }
 
@@ -235,7 +236,7 @@ export default class ActionButton extends Component {
       toValue: 0,
       duration: 250,
     }).start();
-
+    this.props.closeCallback && this.props.closeCallback()
     setTimeout(() => {
       this.setState({ active: false });
     }, 250);
