@@ -100,7 +100,7 @@ export default class ActionButton extends Component {
       <TouchableOpacity
         onPress={()=>this.reset()}
         style={[styles.overlay, { backgroundColor: 'transparent' }]}>
-      {this.props.backdrop}
+        {this.props.backdrop}
       </TouchableOpacity>
     )
 
@@ -114,17 +114,11 @@ export default class ActionButton extends Component {
     )
     return (
       <View pointerEvents="box-none" style={styles.overlay}>
-        <Animated.View pointerEvents="none" style={[styles.overlay, {
-          backgroundColor: this.state.bgColor,
-          opacity: this.state.anim
-        }]}>
-          {this.props.backdrop}
-        </Animated.View>
+        {this.state.active ? touchable:untouchable}
         <View pointerEvents="box-none" style={this.getContainerStyles()}>
           {this.props.children && this._renderActions()}
           {this._renderButton()}
         </View>
-        { this.state.active ? touchable:null }
       </View>
     );
   }
@@ -191,8 +185,10 @@ export default class ActionButton extends Component {
     }
 
     return (
-        <View
-          style={this.getActionsStyle()}>
+        <TouchableOpacity
+          style={this.getActionsStyle()}
+          activeOpacity={1}
+          onPress={() => { this.reset() }}>
           {actionButtons.map((ActionButton, index) => {
             return (
               <ActionButtonItem
@@ -214,7 +210,7 @@ export default class ActionButton extends Component {
               />
             )
           })}
-        </View>
+        </TouchableOpacity>
     );
   }
 
