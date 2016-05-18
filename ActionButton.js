@@ -1,4 +1,4 @@
-import React, { PropTypes, Component, StyleSheet, Text, View, Animated, Easing, TouchableOpacity, PixelRatio } from 'react-native';
+import React, { Platform, PropTypes, Component, StyleSheet, Text, View, Animated, Easing, TouchableOpacity, PixelRatio } from 'react-native';
 import ActionButtonItem from './ActionButtonItem';
 
 const alignItemsMap = {
@@ -141,7 +141,7 @@ export default class ActionButton extends Component {
                 inputRange: [0, 1],
                 outputRange: [this.state.buttonColor, this.state.btnOutRange]
               }),
-              transform: [{
+              transform: Platform.OS == 'ios' ? [{
                   scale: this.state.anim.interpolate({
                     inputRange: [0, 1],
                     outputRange: [1, this.state.outRangeScale]
@@ -151,7 +151,7 @@ export default class ActionButton extends Component {
                     inputRange: [0, 1],
                     outputRange: ['0deg', this.props.icon ? '0deg' : '135deg']
                   })
-                }],
+                }]:[],
             }]}>
             {this._renderButtonIcon()}
           </Animated.View>
